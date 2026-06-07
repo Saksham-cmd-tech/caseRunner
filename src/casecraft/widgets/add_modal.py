@@ -12,7 +12,7 @@ from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Input, Label, TextArea
 
-from caserunner.models import TestCase
+from casecraft.models import TestCase
 
 
 class AddTestCaseModal(ModalScreen[TestCase | None]):

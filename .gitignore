@@ -1,6 +1,6 @@
-.caserunner/
+.casecraft/
 __pycache__/
-caserunner.egg-info/
+casecraft.egg-info/
 dist/
 build/
 .venv/

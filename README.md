@@ -1,4 +1,4 @@
-# ◆ CaseRunner
+# ◆ CaseCraft
 
 A terminal-based competitive programming test case runner — think Codeforces local tester, built with Python and Textual.
 
@@ -10,7 +10,7 @@ Tokyo Night theme · lazygit-style keybindings · per-file session persistence
 
 ```bash
 # 1. Clone / unzip the project
-cd CaseRunner
+cd CaseCraft
 
 # 2. Create a virtual environment (recommended)
 python3 -m venv .venv
@@ -32,7 +32,7 @@ Requires **Python 3.12+**.
 ### Loading a file
 
 Type the path to your `.py` solution in the **FILE** input at the top-left and press `Enter`.  
-CaseRunner will load (or create) a session for that file automatically.
+CaseCraft will load (or create) a session for that file automatically.
 
 ### Adding test cases
 
@@ -88,7 +88,7 @@ Output comparison normalises whitespace: trailing spaces and blank lines at the 
 ## Project Structure
 
 ```
-CaseRunner/
+CaseCraft/
 ├── app.py              ← Textual app, UI composition, key bindings
 ├── runner.py           ← subprocess execution, verdict logic
 ├── models.py           ← TestCase, TestResult, Verdict, Session dataclasses

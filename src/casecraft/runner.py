@@ -11,8 +11,8 @@ import time
 from pathlib import Path
 from typing import Optional
 
-from caserunner.models import TestCase, TestResult, Verdict
-from caserunner.utils import normalize_output
+from casecraft.models import TestCase, TestResult, Verdict
+from casecraft.utils import normalize_output
 
 DEFAULT_TIMEOUT: float = 2.0
 
@@ -24,7 +24,7 @@ async def compile_code(file_path: Path) -> tuple[bool, Optional[str], Optional[P
         # No compilation needed
         return True, None, file_path
         
-    temp_dir = Path(tempfile.gettempdir()) / "caserunner_builds"
+    temp_dir = Path(tempfile.gettempdir()) / "casecraft_builds"
     temp_dir.mkdir(exist_ok=True)
     
     if ext == '.cpp' or ext == '.cc':

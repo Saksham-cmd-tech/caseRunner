@@ -1,5 +1,5 @@
 """
-app.py — CaseRunner 2.0 (3-pane layout with Taproom colors).
+app.py — CaseCraft 2.0 (3-pane layout with Taproom colors).
 """
 
 import asyncio
@@ -12,9 +12,9 @@ from textual.binding import Binding
 from textual.reactive import reactive
 from textual.screen import ModalScreen
 
-from caserunner.models import Session, TestCase, TestResult, Verdict, WorkspaceState
-from caserunner.runner import run_all_test_cases_async
-from caserunner.utils import (
+from casecraft.models import Session, TestCase, TestResult, Verdict, WorkspaceState
+from casecraft.runner import run_all_test_cases_async
+from casecraft.utils import (
     is_initialized, 
     initialize_workspace, 
     load_sessions, 
@@ -23,7 +23,7 @@ from caserunner.utils import (
     load_last_file, 
     save_last_file
 )
-from caserunner.widgets.add_modal import AddTestCaseModal
+from casecraft.widgets.add_modal import AddTestCaseModal
 
 CSS = """
 Screen {
@@ -142,8 +142,8 @@ class InitModal(ModalScreen[bool]):
     def compose(self) -> ComposeResult:
         with Vertical(id="init-dialog"):
             yield Label("[b #e5c07b]Not Initialized[/b]\n")
-            yield Label("CaseRunner is not initialized in this directory.")
-            yield Label("Would you like to initialize it by creating a `.caserunner` folder?")
+            yield Label("CaseCraft is not initialized in this directory.")
+            yield Label("Would you like to initialize it by creating a `.casecraft` folder?")
             yield Button("Initialize Workspace", id="btn-init", variant="success")
             yield Button("Quit", id="btn-quit", variant="error")
 
@@ -177,9 +177,9 @@ class PromptModal(ModalScreen[str | None]):
             self.dismiss(None)
 
 
-class CaseRunnerApp(App):
+class CaseCraftApp(App):
     CSS = CSS
-    TITLE = "CaseRunner ~ Taproom UI (3-Pane)"
+    TITLE = "CaseCraft ~ Taproom UI (3-Pane)"
 
     BINDINGS = [
         Binding("space", "run_all", "Run All", show=False),
@@ -474,5 +474,5 @@ class CaseRunnerApp(App):
         results = await run_all_test_cases_async(self.active_problem, session.test_cases, progress_callback=progress)
 
 if __name__ == "__main__":
-    app = CaseRunnerApp()
+    app = CaseCraftApp()
     app.run()

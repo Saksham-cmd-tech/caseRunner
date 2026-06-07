@@ -67,7 +67,7 @@ class HelpModal(ModalScreen):
 
     def compose(self) -> ComposeResult:
         with Vertical(id="help-outer"):
-            yield Label("⌨ CaseRunner Keyboard Shortcuts", id="help-title")
+            yield Label("⌨ CaseCraft Keyboard Shortcuts", id="help-title")
 
             help_text = """[#7aa2f7 bold]FILE OPERATIONS[/]
 [#9ece6a]ctrl+o[/]    Open file browser

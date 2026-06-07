@@ -1,5 +1,5 @@
 """
-models.py — Data models for CaseRunner 2.0.
+models.py — Data models for CaseCraft 2.0.
 """
 
 from __future__ import annotations

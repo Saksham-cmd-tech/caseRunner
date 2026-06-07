@@ -1,5 +1,5 @@
 """
-utils.py — Utility functions for CaseRunner data persistence.
+utils.py — Utility functions for CaseCraft data persistence.
 """
 
 from __future__ import annotations
@@ -7,9 +7,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from caserunner.models import Session, TestCase
+from casecraft.models import Session, TestCase
 
-_DATA_DIR = Path.cwd() / ".caserunner"
+_DATA_DIR = Path.cwd() / ".casecraft"
 SESSIONS_FILE = _DATA_DIR / "sessions.json"
 LAST_FILE_PATH = _DATA_DIR / "last_file.txt"
 

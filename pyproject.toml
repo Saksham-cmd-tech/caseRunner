@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "case_runner"
-version = "1.2.0"
+name = "casecraft"
+version = "2.0.0"
 description = "A powerful TUI for running algorithmic test cases."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -14,4 +14,4 @@ dependencies = [
 ]
 
 [project.scripts]
-cr = "case_runner.cli:main"
+casecraft = "casecraft.cli:main"
