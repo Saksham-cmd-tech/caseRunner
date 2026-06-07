@@ -21,67 +21,46 @@ class AddTestCaseModal(ModalScreen[TestCase | None]):
     Returns the new/updated TestCase on save, or None on cancel.
     """
 
-    # ── Tokyo Night modal CSS ─────────────────────────────────────────────────
+    # ── Taproom Tokyo Night modal CSS ─────────────────────────────────────────────────
     CSS = """
     AddTestCaseModal {
         align: center middle;
-        background: rgba(26,27,38,0.85);
+        background: rgba(40,44,52,0.85);
     }
 
     #modal-outer {
         width: 72;
         height: auto;
-        background: #1f2335;
-        border: solid #7aa2f7;
+        background: #282c34;
+        border: round #e5c07b;
         padding: 1 2;
     }
 
     #modal-title {
         text-align: center;
-        color: #7aa2f7;
+        color: #e5c07b;
         text-style: bold;
         margin-bottom: 1;
     }
 
     .field-label {
-        color: #565f89;
+        color: #abb2bf;
         margin-top: 1;
         height: 1;
     }
 
-    #input-label {
-        background: #1a1b26;
-        border: tall #292e42;
-        color: #a9b1d6;
-        height: 3;
+    #input-label, #input-data, #input-expected {
+        background: #282c34;
+        border: round #5c6370;
+        color: #abb2bf;
     }
 
-    #input-label:focus {
-        border: tall #7aa2f7;
-    }
+    #input-label { height: 3; }
+    #input-data { height: 7; margin-bottom: 0; }
+    #input-expected { height: 7; margin-bottom: 0; }
 
-    #input-data {
-        background: #1a1b26;
-        border: solid #292e42;
-        color: #a9b1d6;
-        height: 7;
-        margin-bottom: 0;
-    }
-
-    #input-data:focus {
-        border: solid #7aa2f7;
-    }
-
-    #input-expected {
-        background: #1a1b26;
-        border: solid #292e42;
-        color: #a9b1d6;
-        height: 7;
-        margin-bottom: 0;
-    }
-
-    #input-expected:focus {
-        border: solid #7aa2f7;
+    #input-label:focus, #input-data:focus, #input-expected:focus {
+        border: round #98c379;
     }
 
     #btn-row {
@@ -91,25 +70,19 @@ class AddTestCaseModal(ModalScreen[TestCase | None]):
     }
 
     #btn-save {
-        background: #1a2e12;
-        color: #9ece6a;
-        border: tall #3d6b1a;
+        background: #282c34;
+        color: #98c379;
+        border: round #98c379;
         margin-right: 1;
     }
-
-    #btn-save:hover {
-        background: #243d1a;
-    }
+    #btn-save:hover { background: #98c379; color: #282c34; }
 
     #btn-cancel {
-        background: #2d1020;
-        color: #f7768e;
-        border: tall #6b2040;
+        background: #282c34;
+        color: #e06c75;
+        border: round #e06c75;
     }
-
-    #btn-cancel:hover {
-        background: #3d1428;
-    }
+    #btn-cancel:hover { background: #e06c75; color: #282c34; }
     """
 
     BINDINGS = [

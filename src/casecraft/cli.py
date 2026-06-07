@@ -9,7 +9,7 @@ from casecraft.utils import is_initialized, initialize_workspace
 from casecraft.app import CaseCraftApp
 
 def main():
-    parser = argparse.ArgumentParser(description="CaseCraft - TUI for algorithmic test cases.")
+    parser = argparse.ArgumentParser(description="CaseCraft - TUI for custom test cases.")
     subparsers = parser.add_subparsers(dest="command")
 
     init_parser = subparsers.add_parser("init", help="Initialize a CaseCraft workspace in the current directory.")

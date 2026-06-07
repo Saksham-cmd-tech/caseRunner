@@ -61,7 +61,8 @@ async def compile_code(file_path: Path) -> tuple[bool, Optional[str], Optional[P
 def get_run_command(file_path: Path, executable_path: Path) -> list[str]:
     ext = file_path.suffix.lower()
     if ext == '.py':
-        return ["python3", str(file_path)]
+        python_cmd = "python" if os.name == "nt" else "python3"
+        return [python_cmd, str(file_path)]
     elif ext == '.js':
         return ["node", str(file_path)]
     elif ext in ('.cpp', '.cc'):

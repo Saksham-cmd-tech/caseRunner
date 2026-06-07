@@ -5,9 +5,12 @@ app.py — CaseCraft 2.0 (3-pane layout with Taproom colors).
 import asyncio
 from pathlib import Path
 
+import urllib.request
+import json
+
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
-from textual.widgets import DataTable, Static, Input, Label, Button
+from textual.widgets import DataTable, Static, Input, Label, Button, LoadingIndicator
 from textual.binding import Binding
 from textual.reactive import reactive
 from textual.screen import ModalScreen
@@ -24,60 +27,79 @@ from casecraft.utils import (
     save_last_file
 )
 from casecraft.widgets.add_modal import AddTestCaseModal
+from casecraft.widgets.file_tree_modal import FileTreeModal
 
 CSS = """
 Screen {
-    background: #282c34;
+    background: transparent;
     color: #abb2bf;
     padding: 1 2;
 }
 
-#top-bar {
-    height: 3;
-    layout: horizontal;
-    margin-bottom: 1;
+#splash-screen {
+    width: 100%;
+    height: 100%;
+    align: center middle;
+    background: transparent;
+}
+
+.splash-ascii {
+    text-style: bold;
+    color: #e5c07b;
+    text-align: center;
+}
+
+.splash-divider {
+    color: #5c6370;
+    text-align: center;
+}
+
+#splash-log {
+    width: 74;
+    height: 14;
+    color: #abb2bf;
+    margin: 1 0;
+}
+
+.splash-footer {
+    text-align: center;
+    color: #5c6370;
 }
 
 #search-box {
     width: 1fr;
-    border: round #e5c07b;
+    border-bottom: hkey #e5c07b;
     height: 3;
-    background: #282c34;
+    background: transparent;
     color: #abb2bf;
+    display: none;
 }
 #search-box:focus {
-    border: round #98c379;
-}
-
-#viewing-box {
-    width: 30;
-    border: round #e5c07b;
-    height: 3;
-    content-align: center middle;
-    margin-left: 1;
+    border-bottom: hkey #98c379;
 }
 
 #main-container {
     height: 1fr;
     layout: horizontal;
+    display: none;
 }
 
 #left-column {
     width: 35%;
     height: 1fr;
     border: round #e5c07b;
-    background: #282c34;
+    background: transparent;
 }
 
 #prob-table {
     height: 40%;
     border-bottom: hkey #e5c07b;
-    background: #282c34;
+    background: transparent;
 }
 
 #tc-table {
     height: 60%;
-    background: #282c34;
+    background: transparent;
 }
 
 #right-panel {
@@ -90,7 +112,7 @@ Screen {
 }
 
 DataTable > .datatable--header {
-    background: #282c34;
+    background: transparent;
     color: #e5c07b;
     text-style: bold;
 }
@@ -110,19 +132,26 @@ DataTable:focus > .datatable--cursor {
     height: 4;
     margin-top: 1;
     color: #abb2bf;
+    display: none;
 }
 
 /* Modals */
-PromptModal, InitModal {
+InitModal, FileTreeModal {
     align: center middle;
     background: rgba(40,44,52,0.85);
 }
-#prompt-dialog {
+#file-tree-dialog {
     width: 60;
-    height: auto;
+    height: 70%;
     background: #282c34;
     border: round #e5c07b;
     padding: 1 2;
+}
+#problem-tree {
+    height: 1fr;
+    margin-top: 1;
+    margin-bottom: 1;
+    background: #282c34;
 }
 #init-dialog {
     width: 50;
@@ -141,7 +170,7 @@ PromptModal, InitModal {
 class InitModal(ModalScreen[bool]):
     def compose(self) -> ComposeResult:
         with Vertical(id="init-dialog"):
-            yield Label("[b #e5c07b]Not Initialized[/b]\n")
+            yield Label("[b #e5c07b]Not Initialized[/]\n")
             yield Label("CaseCraft is not initialized in this directory.")
             yield Label("Would you like to initialize it by creating a `.casecraft` folder?")
             yield Button("Initialize Workspace", id="btn-init", variant="success")
@@ -154,27 +183,6 @@ class InitModal(ModalScreen[bool]):
             self.dismiss(False)
 
 
-class PromptModal(ModalScreen[str | None]):
-    def __init__(self, title: str, placeholder: str = ""):
-        super().__init__()
-        self.title_text = title
-        self.placeholder = placeholder
-
-    def compose(self) -> ComposeResult:
-        with Vertical(id="prompt-dialog"):
-            yield Label(self.title_text, classes="prompt-title")
-            yield Input(placeholder=self.placeholder, id="prompt-input")
-            yield Label("[dim]Press Enter to confirm, Escape to cancel.[/dim]")
-
-    def on_mount(self):
-        self.query_one(Input).focus()
-
-    def on_input_submitted(self, event: Input.Submitted):
-        self.dismiss(event.value)
-        
-    def on_key(self, event):
-        if event.key == "escape":
-            self.dismiss(None)
 
 
 class CaseCraftApp(App):
@@ -203,13 +211,24 @@ class CaseCraftApp(App):
         self.results: dict[str, TestResult] = {}
 
     def compose(self) -> ComposeResult:
-        with Horizontal(id="top-bar"):
-            yield Input(placeholder="/ Search test cases...", id="search-box")
-            yield Static("Viewing: All", id="viewing-box")
-            
+        ascii_art = (
+            " ██████╗  █████╗ ███████╗███████╗ ██████╗██████╗  █████╗ ███████╗████████╗\n"
+            "██╔════╝ ██╔══██╗██╔════╝██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝╚══██╔══╝\n"
+            "██║      ███████║███████╗█████╗  ██║     ██████╔╝███████║█████╗     ██║   \n"
+            "██║      ██╔══██║╚════██║██╔══╝  ██║     ██╔══██╗██╔══██║██╔══╝     ██║   \n"
+            "╚██████╗ ██║  ██║███████║███████╗╚██████╗██║  ██║██║  ██║██║        ██║   \n"
+            " ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        ╚═╝   "
+        )
+        with Vertical(id="splash-screen"):
+            yield Static(ascii_art, classes="splash-ascii")
+            yield Static("──────────────────────────────────────────────────────────────────────────", classes="splash-divider")
+            yield Static("", id="splash-log")
+            yield Static("──────────────────────────────────────────────────────────────────────────\nCaseCraft v1.3.0\nFast local test case runner for developers\n──────────────────────────────────────────────────────────────────────────", classes="splash-footer")
+
         with Horizontal(id="main-container"):
             with Vertical(id="left-column"):
                 yield DataTable(id="prob-table", cursor_type="row")
+                yield Input(placeholder="/ Search...", id="search-box")
                 yield DataTable(id="tc-table", cursor_type="row")
             yield Static("Select a test case to view details...", id="right-panel")
             
@@ -231,12 +250,81 @@ class CaseCraftApp(App):
             def check_init(result: bool):
                 if result:
                     initialize_workspace()
-                    self._load_workspace_data()
+                    self._start_loading()
                 else:
                     self.exit()
             self.push_screen(InitModal(), check_init)
         else:
-            self._load_workspace_data()
+            self._start_loading()
+
+    def _start_loading(self):
+        self.run_worker(self._loading_process())
+
+    async def _loading_process(self):
+        log_widget = self.query_one("#splash-log", Static)
+        logs = []
+        
+        def update_log():
+            log_widget.update("\n".join(logs))
+
+        # 1. Update check
+        logs.append("[#e5c07b][⏳][/] Checking for updates...")
+        update_log()
+        await asyncio.sleep(0.3)
+        try:
+            req = urllib.request.Request("https://pypi.org/pypi/casecraft/json", headers={"User-Agent": "CaseCraft"})
+            with urllib.request.urlopen(req, timeout=1.5) as resp:
+                data = json.loads(resp.read().decode())
+                latest = data["info"]["version"]
+                import importlib.metadata
+                current = importlib.metadata.version("casecraft")
+                if latest != current:
+                    self.notify(f"Update available: {latest} (Current: {current})", severity="warning", timeout=5)
+        except Exception:
+            pass
+        logs[-1] = "[#98c379][✓][/] Checking for updates..."
+        logs.append("[#98c379][✓][/] Version check complete\n")
+        update_log()
+
+        # 2. Workspace
+        logs.append("[#e5c07b][⏳][/] Initializing workspace...")
+        update_log()
+        await asyncio.sleep(0.3)
+        self._load_workspace_data()
+        logs[-1] = "[#98c379][✓][/] Initializing workspace..."
+        logs.append("[#98c379][✓][/] Workspace ready\n")
+        update_log()
+
+        # 3. Config
+        logs.append("[#e5c07b][⏳][/] Loading configuration...")
+        update_log()
+        await asyncio.sleep(0.3)
+        logs[-1] = "[#98c379][✓][/] Loading configuration..."
+        logs.append("[#98c379][✓][/] Configuration loaded\n")
+        update_log()
+
+        # 4. Test cases
+        logs.append("[#e5c07b][⏳][/] Discovering test cases...")
+        update_log()
+        await asyncio.sleep(0.3)
+        tc_count = len(self.workspace.sessions.get(self.active_problem, Session(file_path="")).test_cases) if self.active_problem else 0
+        logs[-1] = "[#98c379][✓][/] Discovering test cases..."
+        logs.append(f"[#98c379][✓][/] {tc_count} test cases found\n")
+        update_log()
+
+        # 5. Environment
+        logs.append("[#e5c07b][⏳][/] Preparing execution environment...")
+        update_log()
+        await asyncio.sleep(0.3)
+        logs[-1] = "[#98c379][✓][/] Preparing execution environment..."
+        logs.append("[#98c379][✓][/] Environment ready\n")
+        update_log()
+        
+        await asyncio.sleep(0.5)
+        
+        self.query_one("#splash-screen", Vertical).display = False
+        self.query_one("#main-container", Horizontal).display = True
+        self.query_one("#footer-block", Static).display = True
 
     def _load_workspace_data(self):
         self.workspace = WorkspaceState(
@@ -305,7 +393,6 @@ class CaseCraftApp(App):
         if new_val:
             self.workspace.active_file = new_val
             save_last_file(new_val)
-            self.query_one("#viewing-box", Static).update(f"Viewing: {Path(new_val).name}")
         self.active_test_case = None
         self.refresh_test_cases()
         self.update_diff_view()
@@ -382,15 +469,15 @@ class CaseCraftApp(App):
             self.active_test_case = str(event.row_key.value)
 
     def action_focus_search(self):
-        self.query_one("#search-box", Input).focus()
+        sb = self.query_one("#search-box", Input)
+        sb.display = True
+        sb.focus()
 
     def action_clear_search(self):
         sb = self.query_one("#search-box", Input)
-        if sb.has_focus:
-            sb.value = ""
-            self.query_one("#tc-table", DataTable).focus()
-        else:
-            self.query_one("#tc-table", DataTable).focus()
+        sb.value = ""
+        sb.display = False
+        self.query_one("#tc-table", DataTable).focus()
 
     async def action_add_problem(self):
         def check_reply(fp: str | None):
@@ -404,7 +491,7 @@ class CaseCraftApp(App):
                     save_sessions(self.workspace.sessions)
                     self.refresh_problems()
                 self._select_problem_by_path(path_str)
-        self.push_screen(PromptModal("Enter file path to load (e.g. main.py):"), check_reply)
+        self.push_screen(FileTreeModal(), check_reply)
 
     async def action_add_test_case(self):
         if not self.active_problem:

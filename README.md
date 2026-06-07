@@ -1,60 +1,76 @@
 # ◆ CaseCraft
 
-A terminal-based competitive programming test case runner — think Codeforces local tester, built with Python and Textual.
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/Saksham-cmd-tech/caseRunner)
+[![PyPI](https://img.shields.io/pypi/v/casecraft?color=blue)](https://pypi.org/project/casecraft/)
 
-Tokyo Night theme · lazygit-style keybindings · per-file session persistence
+**Source:** [https://github.com/Saksham-cmd-tech/caseRunner.git](https://github.com/Saksham-cmd-tech/caseRunner.git)
+
+A terminal-based test case runner for developers. CaseCraft provides a sleek, Tokyo Night-themed interface to test edge cases, validate function outputs, and track your code's behavior—right from the terminal.
+
+Built with Python and Textual, it features lazygit-style keybindings, native terminal transparency, a beautiful boot sequence, and per-file session persistence.
+
+---
+
+## Features
+
+- **Dynamic Boot Sequence**: Hacker-style splash screen that automatically checks PyPI for version updates in the background.
+- **Native Transparency**: Automatically inherits your terminal's background color and opacity.
+- **Cross-Platform Execution**: Safely evaluates the correct executable environments (e.g. `python3` vs `python`) across macOS, Linux, and Windows.
+- **Local Persistence**: All your test cases are saved locally inside a `.casecraft/` folder in your project.
 
 ---
 
 ## Installation
 
+CaseCraft is available via pip:
+
 ```bash
-# 1. Clone / unzip the project
-cd CaseCraft
-
-# 2. Create a virtual environment (recommended)
-python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Run
-python app.py
+pip install casecraft
 ```
 
-Requires **Python 3.12+**.
+Requires **Python 3.10+**.
 
 ---
 
 ## Usage
 
-### Loading a file
+### 1. Initialization
+To start using CaseCraft in your project, simply run the CLI command:
+```bash
+casecraft init
+```
+This will generate a hidden `.casecraft/` folder in your current directory where all test case data will be safely persisted.
 
-Type the path to your `.py` solution in the **FILE** input at the top-left and press `Enter`.  
-CaseCraft will load (or create) a session for that file automatically.
+### 2. Launching the App
+Open the dashboard by running:
+```bash
+casecraft
+```
 
-### Adding test cases
+### 3. Loading a File
+Press **`p`** to open the *Directory Tree* modal. Navigate through your project files using the arrow keys and press `Enter` to select your source file (e.g. `src/main.py`).  
+CaseCraft will load your file and assign an empty test suite to it.
 
+### 4. Adding Test Cases
 Press **`a`** to open the *Add Test Case* modal.  
 Fill in:
 - **Label / Name** — a short description (e.g. *Basic case*, *Edge: empty list*)
-- **Input (stdin)** — what your program reads from stdin
-- **Expected Output** — what your program should print
+- **Input (stdin)** — the arguments or data you want to pipe into the program
+- **Expected Output** — the output you want the program to print
 
 Press `ctrl+s` to save or `Escape` to cancel.
 
-### Running tests
+### 5. Running Tests
 
 | Action | Key |
 |---|---|
-| Run **all** test cases | `ctrl+r` |
-| Run **selected** test case | `Enter` (focus on TC list) |
+| Run **all** test cases | `space` |
 
-### Managing test cases
+### 6. Managing Test Cases
 
 | Action | Key |
 |---|---|
+| Search | `/` |
 | Add | `a` |
 | Edit selected | `e` |
 | Delete selected | `d` |
@@ -72,16 +88,16 @@ Press `ctrl+s` to save or `Escape` to cancel.
 | `TLE` | Time Limit Exceeded — ran longer than 2 seconds |
 | `RE` | Runtime Error — non-zero exit code or exception |
 
-Output comparison normalises whitespace: trailing spaces and blank lines at the end are ignored.
+Output comparison normalizes whitespace: trailing spaces and blank lines at the end are ignored.
 
 ---
 
 ## Session System
 
-- Every `.py` file gets its own **session** stored in `data/sessions.json`
-- Switching to a different file automatically loads that file's test cases
-- The last opened file is restored on the next launch
-- Sessions survive app restarts — your test cases are always saved
+- Every `.py` file gets its own **session** stored in `.casecraft/sessions.json`.
+- Switching to a different file automatically loads that file's test cases.
+- The last opened file is restored on the next launch.
+- Sessions survive app restarts — your test cases are always saved locally to your project workspace.
 
 ---
 
@@ -89,18 +105,17 @@ Output comparison normalises whitespace: trailing spaces and blank lines at the 
 
 ```
 CaseCraft/
-├── app.py              ← Textual app, UI composition, key bindings
-├── runner.py           ← subprocess execution, verdict logic
-├── models.py           ← TestCase, TestResult, Verdict, Session dataclasses
-├── utils.py            ← session I/O, output normalisation, helpers
-├── requirements.txt
+├── pyproject.toml
 ├── README.md
-├── data/
-│   └── sessions.json   ← persisted sessions (auto-created)
-└── widgets/
-    ├── __init__.py
-    ├── add_modal.py    ← Add / Edit test case modal
-    └── diff_viewer.py  ← Expected vs Actual side-by-side viewer
+├── src/
+│   └── casecraft/
+│       ├── cli.py              ← CLI initialization logic
+│       ├── app.py              ← Textual app, UI composition
+│       ├── runner.py           ← subprocess execution
+│       ├── models.py           ← Data models
+│       ├── utils.py            ← session I/O, helpers
+│       └── widgets/
+│           └── add_modal.py    ← Add / Edit test case modal
 ```
 
 ---
@@ -111,13 +126,20 @@ CaseCraft/
 
 ---
 
+## About & Support
+
+**CaseCraft** is built and maintained by Saksham. 
+
+If you encounter any bugs, have feature requests, or want to contribute, please visit the [Issue Tracker](https://github.com/Saksham-cmd-tech/caseRunner/issues). 
+
+---
+
 ## Future Improvements
 
-- [ ] Multi-language support (C++, Java, Go) via configurable run commands
-- [ ] Stress tester — generate random inputs and compare two solutions
+- [ ] Multi-language support (Node.js, Go, Rust) via configurable run commands
+- [ ] Environment variable injection per test case
 - [ ] Memory usage tracking alongside runtime
-- [ ] Import test cases from a plain-text block (paste Codeforces samples)
 - [ ] `ctrl+k` command palette
-- [ ] Export results as a Markdown table
+- [ ] Export results as a Markdown or JSON report
 - [ ] Configurable timeout per test case
 - [ ] Side-by-side character-level diff highlighting
