@@ -1,0 +1,6 @@
+.caserunner/
+__pycache__/
+caserunner.egg-info/
+dist/
+build/
+.venv/

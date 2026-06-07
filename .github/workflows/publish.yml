@@ -1,0 +1,41 @@
+name: Publish to PyPI and Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger on tags starting with 'v' (e.g., v2.0.0)
+
+jobs:
+  build-and-publish:
+    name: Build and publish to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for trusted publishing to PyPI
+      contents: write  # Required for creating GitHub Releases
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install build dependencies
+        run: python -m pip install --upgrade pip build
+
+      - name: Build a binary wheel and a source tarball
+        run: python -m build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # Uses Trusted Publishing (OIDC). Make sure to configure this on PyPI!
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/*.whl
+            dist/*.tar.gz

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "caserunner"
+version = "1.2.0"
+description = "A powerful TUI for running algorithmic test cases."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "textual>=0.40.0",
+    "pydantic>=2.0.0",
+]
+
+[project.scripts]
+cr = "caserunner.cli:main"
