@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "caserunner"
+name = "case_runner"
 version = "1.2.0"
 description = "A powerful TUI for running algorithmic test cases."
 readme = "README.md"
@@ -14,4 +14,4 @@ dependencies = [
 ]
 
 [project.scripts]
-cr = "caserunner.cli:main"
+cr = "case_runner.cli:main"
