@@ -17,20 +17,20 @@ class HelpModal(ModalScreen):
     CSS = """
     HelpModal {
         align: center middle;
-        background: rgba(26,27,38,0.85);
+        background: transparent;
     }
 
     #help-outer {
         width: 100;
         height: auto;
-        background: #1f2335;
-        border: solid #7aa2f7;
+        background: #1e222a;
+        border: solid #e5c07b;
         padding: 1 2;
     }
 
     #help-title {
         text-align: center;
-        color: #7aa2f7;
+        color: #e5c07b;
         text-style: bold;
         margin-bottom: 1;
     }
@@ -38,10 +38,10 @@ class HelpModal(ModalScreen):
     #help-content {
         height: 30;
         overflow-y: auto;
-        background: #1a1b26;
-        border: solid #292e42;
+        background: #282c34;
+        border: solid #3e4452;
         padding: 1;
-        color: #a9b1d6;
+        color: #abb2bf;
         margin-bottom: 1;
     }
 
@@ -51,8 +51,8 @@ class HelpModal(ModalScreen):
 
     #btn-close {
         background: #0d1a3a;
-        color: #7aa2f7;
-        border: tall #7aa2f7;
+        color: #e5c07b;
+        border: tall #e5c07b;
     }
 
     #btn-close:hover {
@@ -69,34 +69,34 @@ class HelpModal(ModalScreen):
         with Vertical(id="help-outer"):
             yield Label("⌨ CaseCraft Keyboard Shortcuts", id="help-title")
 
-            help_text = """[#7aa2f7 bold]FILE OPERATIONS[/]
-[#9ece6a]ctrl+o[/]    Open file browser
-[#9ece6a]ctrl+s[/]    Save (auto-save enabled)
-[#9ece6a]ctrl+g[/]    Show run history
-[#9ece6a]q[/]         Quit app
+            help_text = """[#e5c07b bold]FILE OPERATIONS[/]
+[#98c379]ctrl+o[/]    Open file browser
+[#98c379]ctrl+s[/]    Save (auto-save enabled)
+[#98c379]ctrl+g[/]    Show run history
+[#98c379]q[/]         Quit app
 
-[#7aa2f7 bold]TEST CASE MANAGEMENT[/]
-[#9ece6a]a[/]         Add new test case
-[#9ece6a]e[/]         Edit selected test case
-[#9ece6a]d[/]         Delete selected test case
-[#9ece6a]y[/]         Duplicate selected test case
-[#9ece6a]/[/]         Search/filter test cases
-[#9ece6a]tab[/]       Switch between panels
+[#e5c07b bold]TEST CASE MANAGEMENT[/]
+[#98c379]a[/]         Add new test case
+[#98c379]e[/]         Edit selected test case
+[#98c379]d[/]         Delete selected test case
+[#98c379]y[/]         Duplicate selected test case
+[#98c379]/[/]         Search/filter test cases
+[#98c379]tab[/]       Switch between panels
 
-[#7aa2f7 bold]RUNNING TESTS[/]
-[#9ece6a]ctrl+r[/]    Run all test cases
-[#9ece6a]enter[/]     Run selected test case (in TC list)
-[#9ece6a]ctrl+w[/]    Toggle watch mode (auto-run on file change)
+[#e5c07b bold]RUNNING TESTS[/]
+[#98c379]ctrl+r[/]    Run all test cases
+[#98c379]enter[/]     Run selected test case (in TC list)
+[#98c379]ctrl+w[/]    Toggle watch mode (auto-run on file change)
 
-[#7aa2f7 bold]IMPORT & EXPORT[/]
-[#9ece6a]ctrl+i[/]    Import test cases from text
-[#9ece6a]ctrl+e[/]    Export results as markdown
+[#e5c07b bold]IMPORT & EXPORT[/]
+[#98c379]ctrl+i[/]    Import test cases from text
+[#98c379]ctrl+e[/]    Export results as markdown
 
-[#7aa2f7 bold]COMPARE & DIAGNOSTICS[/]
-[#9ece6a]ctrl+x[/]    Compare with another solution
+[#e5c07b bold]COMPARE & DIAGNOSTICS[/]
+[#98c379]ctrl+x[/]    Compare with another solution
 
-[#7aa2f7 bold]OTHER[/]
-[#9ece6a]?[/]  or  [#9ece6a]ctrl+h[/]    Show this help
+[#e5c07b bold]OTHER[/]
+[#98c379]?[/]  or  [#98c379]ctrl+h[/]    Show this help
 """
 
             yield Static(help_text, id="help-content")

@@ -25,53 +25,53 @@ class FileBrowserModal(ModalScreen[str | None]):
     CSS = """
     FileBrowserModal {
         align: center middle;
-        background: rgba(26,27,38,0.85);
+        background: transparent;
     }
 
     #browser-outer {
         width: 80;
         height: auto;
-        background: #1f2335;
-        border: solid #7aa2f7;
+        background: #1e222a;
+        border: solid #e5c07b;
         padding: 1 2;
     }
 
     #browser-title {
         text-align: center;
-        color: #7aa2f7;
+        color: #e5c07b;
         text-style: bold;
         margin-bottom: 1;
     }
 
     .browser-label {
-        color: #565f89;
+        color: #5c6370;
         margin-top: 1;
         height: 1;
     }
 
     #current-path {
-        background: #1a1b26;
-        border: tall #292e42;
+        background: #282c34;
+        border: tall #3e4452;
         color: #7dcfff;
         height: 3;
     }
 
     #current-path:focus {
-        border: tall #7aa2f7;
+        border: tall #e5c07b;
     }
 
     #path-status {
-        color: #7aa2f7;
+        color: #e5c07b;
         height: 1;
         margin-bottom: 1;
     }
 
     #file-table {
         height: 12;
-        background: #1a1b26;
-        border: solid #292e42;
-        scrollbar-background: #1a1b26;
-        scrollbar-color: #292e42;
+        background: #282c34;
+        border: solid #3e4452;
+        scrollbar-background: #282c34;
+        scrollbar-color: #3e4452;
         scrollbar-color-hover: #3d4466;
     }
 
@@ -83,7 +83,7 @@ class FileBrowserModal(ModalScreen[str | None]):
 
     #btn-select {
         background: #1a2e12;
-        color: #9ece6a;
+        color: #98c379;
         border: tall #3d6b1a;
         margin-right: 1;
     }
@@ -94,7 +94,7 @@ class FileBrowserModal(ModalScreen[str | None]):
 
     #btn-cancel {
         background: #2d1020;
-        color: #f7768e;
+        color: #e06c75;
         border: tall #6b2040;
     }
 
@@ -160,7 +160,7 @@ class FileBrowserModal(ModalScreen[str | None]):
             else:
                 status.update("[#e0af68]Path exists but is not a .py file.[/]")
         else:
-            status.update("[#f7768e]Path not found. Check the spelling and try again.[/]")
+            status.update("[#e06c75]Path not found. Check the spelling and try again.[/]")
 
     def action_select(self) -> None:
         """Select the highlighted item or go into directory."""

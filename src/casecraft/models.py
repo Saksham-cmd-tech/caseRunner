@@ -21,13 +21,13 @@ class Verdict(str, Enum):
 
 
 VERDICT_COLOR: dict[Verdict, str] = {
-    Verdict.ACCEPTED:            "#9ece6a",
-    Verdict.WRONG_ANSWER:        "#f7768e",
+    Verdict.ACCEPTED:            "#98c379",
+    Verdict.WRONG_ANSWER:        "#e06c75",
     Verdict.RUNTIME_ERROR:       "#bb9af7",
     Verdict.TIME_LIMIT_EXCEEDED: "#e0af68",
-    Verdict.COMPILATION_ERROR:   "#f7768e",
-    Verdict.PENDING:             "#565f89",
-    Verdict.RUNNING:             "#7aa2f7",
+    Verdict.COMPILATION_ERROR:   "#e06c75",
+    Verdict.PENDING:             "#5c6370",
+    Verdict.RUNNING:             "#e5c07b",
 }
 
 

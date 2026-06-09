@@ -23,15 +23,15 @@ class DiffViewer(Widget):
     DEFAULT_CSS = """
     DiffViewer {
         height: 14;
-        border-top: solid #292e42;
+        border-top: solid #3e4452;
     }
 
     #diff-header {
         background: #16161e;
-        color: #565f89;
+        color: #5c6370;
         height: 1;
         padding: 0 1;
-        border-bottom: solid #292e42;
+        border-bottom: solid #3e4452;
     }
 
     #diff-cols {
@@ -41,7 +41,7 @@ class DiffViewer(Widget):
     .diff-col {
         width: 1fr;
         padding: 0 1;
-        border-right: solid #292e42;
+        border-right: solid #3e4452;
         overflow-y: auto;
     }
 
@@ -50,7 +50,7 @@ class DiffViewer(Widget):
     }
 
     .diff-col-label {
-        color: #565f89;
+        color: #5c6370;
         height: 1;
         text-style: bold;
     }
@@ -59,15 +59,15 @@ class DiffViewer(Widget):
         background: #16161e;
         height: 1;
         padding: 0 1;
-        border-top: solid #292e42;
-        color: #565f89;
+        border-top: solid #3e4452;
+        color: #5c6370;
     }
 
     #diff-strip-bottom {
         background: #16161e;
         height: 1;
         padding: 0 1;
-        color: #565f89;
+        color: #5c6370;
     }
     """
 
@@ -114,29 +114,29 @@ class DiffViewer(Widget):
 
         match result.verdict:
             case Verdict.ACCEPTED:
-                exp_box.update(f"[#9ece6a]{exp_text}[/]")
-                act_box.update(f"[#9ece6a]{act_text or exp_text}[/]")
-                match_indicator = "[#9ece6a]✓  match[/]"
+                exp_box.update(f"[#98c379]{exp_text}[/]")
+                act_box.update(f"[#98c379]{act_text or exp_text}[/]")
+                match_indicator = "[#98c379]✓  match[/]"
 
             case Verdict.WRONG_ANSWER:
-                exp_box.update(f"[#9ece6a]{exp_text}[/]")
-                act_box.update(f"[#f7768e]{act_text or '(empty)'}[/]")
-                match_indicator = "[#f7768e]✗  mismatch[/]"
+                exp_box.update(f"[#98c379]{exp_text}[/]")
+                act_box.update(f"[#e06c75]{act_text or '(empty)'}[/]")
+                match_indicator = "[#e06c75]✗  mismatch[/]"
 
             case Verdict.TIME_LIMIT_EXCEEDED:
-                exp_box.update(f"[#565f89]{exp_text}[/]")
+                exp_box.update(f"[#5c6370]{exp_text}[/]")
                 act_box.update("[#e0af68]— timed out[/]")
                 match_indicator = "[#e0af68]⧗  TLE[/]"
 
             case Verdict.RUNTIME_ERROR:
-                exp_box.update(f"[#565f89]{exp_text}[/]")
+                exp_box.update(f"[#5c6370]{exp_text}[/]")
                 err = result.error or "runtime error"
-                act_box.update(f"[#f7768e]{err}[/]")
+                act_box.update(f"[#e06c75]{err}[/]")
                 match_indicator = "[#bb9af7]⚡  runtime error[/]"
 
             case _:
-                exp_box.update(f"[#565f89]{exp_text}[/]")
-                act_box.update("[#565f89]—[/]")
+                exp_box.update(f"[#5c6370]{exp_text}[/]")
+                act_box.update("[#5c6370]—[/]")
                 match_indicator = ""
 
         # ── bottom info strip ─────────────────────────────────────────────────
@@ -150,9 +150,9 @@ class DiffViewer(Widget):
         exit_code = "0" if result.verdict == Verdict.ACCEPTED else "≠ 0"
 
         strip.update(
-            f"runtime: [#a9b1d6]{runtime_str}[/]   "
-            f"exit: [#a9b1d6]{exit_code}[/]   "
-            f"stderr: [#a9b1d6]{'yes' if result.error else 'none'}[/]"
+            f"runtime: [#abb2bf]{runtime_str}[/]   "
+            f"exit: [#abb2bf]{exit_code}[/]   "
+            f"stderr: [#abb2bf]{'yes' if result.error else 'none'}[/]"
         )
 
         if compare_result is None:
@@ -163,7 +163,7 @@ class DiffViewer(Widget):
         if compare_label:
             compare_status = f" | compare: {compare_label}"
         if result.actual_output == compare_result.actual_output and result.verdict == compare_result.verdict:
-            compare_status += " [#9ece6a]same output[/]"
+            compare_status += " [#98c379]same output[/]"
         else:
-            compare_status += " [#f7768e]different output[/]"
+            compare_status += " [#e06c75]different output[/]"
         strip_b.update(f"{match_indicator}{compare_status}")

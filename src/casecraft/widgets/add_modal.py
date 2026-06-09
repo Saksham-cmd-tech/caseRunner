@@ -25,13 +25,13 @@ class AddTestCaseModal(ModalScreen[TestCase | None]):
     CSS = """
     AddTestCaseModal {
         align: center middle;
-        background: rgba(40,44,52,0.85);
+        background: transparent;
     }
 
     #modal-outer {
         width: 72;
         height: auto;
-        background: #282c34;
+        background: transparent;
         border: round #e5c07b;
         padding: 1 2;
     }
@@ -50,7 +50,7 @@ class AddTestCaseModal(ModalScreen[TestCase | None]):
     }
 
     #input-label, #input-data, #input-expected {
-        background: #282c34;
+        background: transparent;
         border: round #5c6370;
         color: #abb2bf;
     }
@@ -70,7 +70,7 @@ class AddTestCaseModal(ModalScreen[TestCase | None]):
     }
 
     #btn-save {
-        background: #282c34;
+        background: transparent;
         color: #98c379;
         border: round #98c379;
         margin-right: 1;
@@ -78,7 +78,7 @@ class AddTestCaseModal(ModalScreen[TestCase | None]):
     #btn-save:hover { background: #98c379; color: #282c34; }
 
     #btn-cancel {
-        background: #282c34;
+        background: transparent;
         color: #e06c75;
         border: round #e06c75;
     }

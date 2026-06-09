@@ -17,38 +17,38 @@ class SearchModal(ModalScreen[str | None]):
     CSS = """
     SearchModal {
         align: center middle;
-        background: rgba(26,27,38,0.85);
+        background: transparent;
     }
 
     #search-outer {
         width: 70;
         height: auto;
-        background: #1f2335;
-        border: solid #7aa2f7;
+        background: #1e222a;
+        border: solid #e5c07b;
         padding: 1 2;
     }
 
     #search-title {
         text-align: center;
-        color: #7aa2f7;
+        color: #e5c07b;
         text-style: bold;
         margin-bottom: 1;
     }
 
     #search-input {
-        background: #1a1b26;
-        border: tall #7aa2f7;
-        color: #a9b1d6;
+        background: #282c34;
+        border: tall #e5c07b;
+        color: #abb2bf;
         height: 3;
         margin-bottom: 1;
     }
 
     #search-input:focus {
-        border: tall #7aa2f7;
+        border: tall #e5c07b;
     }
 
     #search-help {
-        color: #565f89;
+        color: #5c6370;
         height: 2;
         font-size: 9;
     }
@@ -73,7 +73,7 @@ class SearchModal(ModalScreen[str | None]):
             )
 
             yield Static(
-                "[#565f89]enter[/] search · [#565f89]esc[/] cancel",
+                "[#5c6370]enter[/] search · [#5c6370]esc[/] cancel",
                 id="search-help",
             )
 

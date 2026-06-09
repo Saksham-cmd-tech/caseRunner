@@ -19,20 +19,20 @@ class HistoryModal(ModalScreen):
     CSS = """
     HistoryModal {
         align: center middle;
-        background: rgba(26,27,38,0.85);
+        background: transparent;
     }
 
     #history-outer {
         width: 90;
         height: auto;
-        background: #1f2335;
-        border: solid #7aa2f7;
+        background: #1e222a;
+        border: solid #e5c07b;
         padding: 1 2;
     }
 
     #history-title {
         text-align: center;
-        color: #7aa2f7;
+        color: #e5c07b;
         text-style: bold;
         margin-bottom: 1;
     }
@@ -40,10 +40,10 @@ class HistoryModal(ModalScreen):
     #history-content {
         height: 24;
         overflow-y: auto;
-        background: #1a1b26;
-        border: solid #292e42;
+        background: #282c34;
+        border: solid #3e4452;
         padding: 1;
-        color: #a9b1d6;
+        color: #abb2bf;
         margin-bottom: 1;
     }
 
@@ -53,8 +53,8 @@ class HistoryModal(ModalScreen):
 
     #btn-close {
         background: #0d1a3a;
-        color: #7aa2f7;
-        border: tall #7aa2f7;
+        color: #e5c07b;
+        border: tall #e5c07b;
     }
 
     #btn-close:hover {

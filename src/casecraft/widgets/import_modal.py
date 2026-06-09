@@ -1,6 +1,6 @@
 """
 widgets/import_modal.py — Modal for importing test cases from text blocks.
-Supports Codeforces-style input/output format and custom parsing.
+Supports bulk input/output format and custom parsing.
 """
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen
 from textual.widgets import Button, Label, TextArea
 
-from models import TestCase
+from casecraft.models import TestCase
 
 
 class ImportTestsModal(ModalScreen[list[TestCase] | None]):
@@ -20,47 +20,47 @@ class ImportTestsModal(ModalScreen[list[TestCase] | None]):
     CSS = """
     ImportTestsModal {
         align: center middle;
-        background: rgba(26,27,38,0.85);
+        background: transparent;
     }
 
     #import-outer {
         width: 90;
         height: auto;
-        background: #1f2335;
-        border: solid #7aa2f7;
+        background: #1e222a;
+        border: solid #e5c07b;
         padding: 1 2;
     }
 
     #import-title {
         text-align: center;
-        color: #7aa2f7;
+        color: #e5c07b;
         text-style: bold;
         margin-bottom: 1;
     }
 
     .import-label {
-        color: #565f89;
+        color: #5c6370;
         margin-top: 1;
         height: 1;
     }
 
     #import-help {
-        color: #565f89;
+        color: #5c6370;
         height: 2;
         font-size: 10;
         margin-bottom: 1;
     }
 
     #import-area {
-        background: #1a1b26;
-        border: solid #292e42;
-        color: #a9b1d6;
+        background: #282c34;
+        border: solid #3e4452;
+        color: #abb2bf;
         height: 15;
         margin-bottom: 1;
     }
 
     #import-area:focus {
-        border: solid #7aa2f7;
+        border: solid #e5c07b;
     }
 
     #btn-row {
@@ -70,7 +70,7 @@ class ImportTestsModal(ModalScreen[list[TestCase] | None]):
 
     #btn-import {
         background: #1a2e12;
-        color: #9ece6a;
+        color: #98c379;
         border: tall #3d6b1a;
         margin-right: 1;
     }
@@ -81,7 +81,7 @@ class ImportTestsModal(ModalScreen[list[TestCase] | None]):
 
     #btn-cancel {
         background: #2d1020;
-        color: #f7768e;
+        color: #e06c75;
         border: tall #6b2040;
     }
 
@@ -100,7 +100,7 @@ class ImportTestsModal(ModalScreen[list[TestCase] | None]):
             yield Label("Import Test Cases", id="import-title")
 
             yield Label(
-                "Paste test cases (Codeforces format: Input\\nExpected Output\\n\\nInput\\nExpected...)",
+                "Paste test cases (Bulk format: Input\\nExpected Output\\n\\nInput\\nExpected...)",
                 id="import-help",
             )
 
@@ -138,7 +138,7 @@ class ImportTestsModal(ModalScreen[list[TestCase] | None]):
         self.dismiss(test_cases if test_cases else None)
 
     def _parse_tests(self, content: str) -> list[TestCase]:
-        """Parse Codeforces-style test format."""
+        """Parse bulk-style test format."""
         lines = content.strip().split("\n")
         test_cases = []
         i = 0
