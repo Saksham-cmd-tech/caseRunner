@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="CaseCraft Banner" width="100%"/>
+<img src="https://raw.githubusercontent.com/Saksham-cmd-tech/caseRunner/main/assets/banner.png" alt="CaseCraft Banner" width="100%"/>
 
 *A blazing fast, One Dark-themed local test case runner for developers.*
 
@@ -13,7 +13,7 @@
 <br/>
 
 <!-- Showcase GIF -->
-<img src="demo.gif" alt="CaseCraft Showcase" width="800"/>
+<img src="https://raw.githubusercontent.com/Saksham-cmd-tech/caseRunner/main/demo.gif" alt="CaseCraft Showcase" width="800"/>
 
 </div>
 
