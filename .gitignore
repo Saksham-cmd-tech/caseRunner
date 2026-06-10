@@ -4,3 +4,7 @@ casecraft.egg-info/
 dist/
 build/
 .venv/
+post.md
+*.tape
+shots.tape
+.gitignore
