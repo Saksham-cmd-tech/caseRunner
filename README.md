@@ -65,6 +65,16 @@ casecraft init
 casecraft
 ```
 
+### Headless Execution Mode
+
+Want to skip the UI entirely? If you've already added test cases for a file, you can pass the file path as an argument to run all tests headlessly directly in the console:
+
+```bash
+casecraft main.cpp
+```
+
+CaseCraft will intelligently compile your code (if needed), execute the tests asynchronously, and render a beautiful, color-coded execution summary table straight to stdout!
+
 ---
 
 ## ⚙️ How It Works Under the Hood
